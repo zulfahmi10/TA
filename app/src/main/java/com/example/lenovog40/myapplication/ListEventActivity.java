@@ -8,7 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 
 import com.example.lenovog40.myapplication.adapter.listAdapter;
 import com.example.lenovog40.myapplication.Api.BaseApiService;
@@ -35,6 +37,7 @@ public class ListEventActivity extends AppCompatActivity {
     private ArrayList<Event> eventArrayList = new ArrayList<>();
     private listAdapter listadapter  ;
     private RecyclerView recyclerView;
+    private ProgressBar pb1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class ListEventActivity extends AppCompatActivity {
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        pb1=findViewById(R.id.pb1);
+        pb1.setVisibility(View.VISIBLE);
+
         mApiService = UtilsApi.getApiService();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplication());
@@ -65,6 +71,7 @@ public class ListEventActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    pb1.setVisibility(View.GONE);
                     try {
                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
 
@@ -73,6 +80,7 @@ public class ListEventActivity extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Event event = new Event();
+                            event.setId_event(object.getString("id_event"));
                             event.setNamaEvent(object.getString("nama_event"));
                             event.setLokasi(object.getString("lokasi"));
                             event.setTanggal(object.getString("tanggal"));

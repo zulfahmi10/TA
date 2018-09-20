@@ -1,5 +1,6 @@
 package com.example.lenovog40.myapplication;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -41,17 +42,16 @@ public class LoginActivity extends AppCompatActivity {
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.password);
         TextView regis = (TextView) findViewById(R.id.btnregister);
-        Button login = (Button) findViewById(R.id.btnlogin);
+        final Button login = (Button) findViewById(R.id.btnlogin);
 
         manager = new PrefManager(this);
         mApiService = UtilsApi.getApiService();
 
 
-        if (manager.sessionLogin()==true){
+        if (manager.sessionLogin() == true) {
             Intent intent = new Intent(getApplicationContext(), MenuEventActivity.class);
             startActivity(intent);
         }
-
 
 
         regis.setOnClickListener(new View.OnClickListener() {
@@ -60,12 +60,14 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), RegisterActivity.class);
                 startActivity(intent);
 
-            }});
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                login.setEnabled(false);
+                login.setText("Loading ...");
 
                 if (username.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Username tidak boleh kosong!", Toast.LENGTH_SHORT).show();
@@ -73,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password tidak boleh kosong!", Toast.LENGTH_SHORT).show();
                 } else {
                     mApiService.loginRequest(username.getText().toString(), password.getText().toString()).enqueue(new Callback<ResponseBody>() {
+                        @SuppressLint("ShowToast")
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             if (response.isSuccessful()) {
@@ -92,16 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                                         String email = jsonRESULTS.getJSONObject("user").getString("email");
 
 
-
-
-                                        manager.setSudahLogin(true, id_user_android,nama,alamat,telpon,email);
+                                        manager.setSudahLogin(true, id_user_android, nama, alamat, telpon, email);
 
                                         Intent intent = new Intent(getApplicationContext(), MenuEventActivity.class);
                                         startActivity(intent);
-
+                                        Toast.makeText(getApplicationContext(), "Login Sukses", Toast.LENGTH_SHORT);
+                                        finish();
                                     } else {
-
-                                        String msg = jsonRESULTS. getString("error_msg");
+                                        String msg = jsonRESULTS.getString("error_msg");
                                         // Jika login gagal
                                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
@@ -121,7 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }
-            }});
+            }
+        });
     }
 }
 

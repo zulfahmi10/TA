@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lenovog40.myapplication.Action.PrefManager;
 import com.example.lenovog40.myapplication.Api.BaseApiService;
@@ -29,7 +30,7 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
 
     private List<Event> eventList;
     private BaseApiService baseApiService;
-    TextView judul,descrip;
+    private TextView judul,descrip;
 
     public listAdapter(ArrayList<Event> eventList) {
         this.eventList = eventList;
@@ -45,6 +46,7 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Event event = eventList.get(position);
+        holder.txIds.setText(event.getId_event());
         holder.txnama.setText(event.getNamaEvent());
         holder.txlokasi.setText(event.getLokasi());
         holder.txTanggal.setText(event.getTanggal());
@@ -55,8 +57,8 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
-                Log.i("id",""+eventList.get(position).getId_event());
-                AlertDialog mBuilder = new AlertDialog.Builder(view.getContext()).create();
+                Log.i("kontoru",""+eventList.get(position).getId_event());
+                final AlertDialog mBuilder = new AlertDialog.Builder(view.getContext()).create();
                 LayoutInflater inflater = LayoutInflater.from(view.getContext());
                 View mview = inflater.inflate(R.layout.listdetail,null);
                 mBuilder.setView(mview);
@@ -65,25 +67,28 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
                 descrip = mview.findViewById(R.id.descdetail);
                 btndaftar= mview.findViewById(R.id.btndaftar);
                 
-                judul.setText(eventList.get(position).getId_event());
+                judul.setText(event.getNamaEvent());
                 descrip.setText(event.getDescEvent());
                 btndaftar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         registerEvent(view.getContext(), eventList.get(position).getId_event());
+                        mBuilder.hide();
+                        Toast.makeText(view.getContext(),"Anda Telah Mengikuti Event "+ judul.getText().toString(), Toast.LENGTH_LONG);
+
                     }
                 });
 
                 mBuilder.show();
             }
         });
+
     }
 
     private void registerEvent(Context context, String idEvent) {
-        idEvent = judul.getText().toString();
         baseApiService = UtilsApi.getApiService();
         PrefManager prefManager =new PrefManager(context);
-        baseApiService.ikutevent(prefManager.getId(),idEvent,prefManager.getNamaUser(),prefManager.getAlamat(),prefManager.getTelpon(),prefManager.getEmail()).enqueue(new Callback<ResponseBody>() {
+        baseApiService.ikutevent(prefManager.getId(),idEvent,  prefManager.getNamaUser(),prefManager.getAlamat(),prefManager.getTelpon(),prefManager.getEmail()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
@@ -102,11 +107,12 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txnama, txlokasi, txTanggal, txjenis_event,txharga,txdescevent;
+        public TextView txIds, txnama, txlokasi, txTanggal, txjenis_event,txharga,txdescevent;
         public LinearLayout linearr;
 
         public MyViewHolder(View view) {
             super(view);
+            txIds =view.findViewById(R.id.ids_event);
             txnama = (TextView) view.findViewById(R.id.nama_event);
             txlokasi = (TextView) view.findViewById(R.id.lokasi);
             txTanggal = (TextView) view.findViewById(R.id.tanggal);

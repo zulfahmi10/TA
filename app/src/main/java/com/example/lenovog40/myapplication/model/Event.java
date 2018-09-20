@@ -2,6 +2,14 @@ package com.example.lenovog40.myapplication.model;
 
 public class Event {
 
+    public String getId_event() {
+        return id_event;
+    }
+
+    public void setId_event(String id_event) {
+        this.id_event = id_event;
+    }
+
     private String id_event;
     private String namaEvent;
     private String lokasi;
@@ -10,13 +18,6 @@ public class Event {
     private String harga;
     private String descEvent;
 
-    public String getId_event() {
-        return id_event;
-    }
-
-    public void setId_event(String id_event) {
-        this.id_event = id_event;
-    }
 
     public String getNamaEvent() {
         return namaEvent;
