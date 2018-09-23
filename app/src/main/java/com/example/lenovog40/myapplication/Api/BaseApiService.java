@@ -36,7 +36,6 @@ public interface BaseApiService {
                                  @Field("email")String email);
 
     //LISTEVENT
-
     @GET("listAllEvent.php")
     Call<ResponseBody> daftarRequest();
 

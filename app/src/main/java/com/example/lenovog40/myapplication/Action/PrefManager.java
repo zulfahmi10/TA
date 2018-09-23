@@ -53,66 +53,6 @@ public class PrefManager {
     public String getTelpon(){return pref.getString("telpon","");}
     public String getEmail(){return pref.getString("email","");}
 
-    // -------------------------------------------------------- //
-
-    // Hospital
-    /*public void setHospitalUsername(String username, int index){
-        editor.putString("username"+index,username);
-
-        editor.commit();
-    }
-    public String getHospitalUsername(int index) {
-        return pref.getString("username"+index, "");
-    }
-
-
-    public void setHospitalSpesialis(String spesilis, int index){
-        editor.putString("spesialis"+index,spesilis);
-
-        editor.commit();
-    }
-    public String getHospitalSpesialis(int index) {
-        return pref.getString("spesialis"+index, "");
-    }
-
-    public void setIndexHospital(int index){
-        editor.putInt("uindex",index);
-
-        editor.commit();
-    }
-    public Integer getIndexHospital() {
-        return pref.getInt("uindex", 0);
-    }
-
-    public void setIndexSpesialis(int index){
-        editor.putInt("spindex",index);
-
-        editor.commit();
-    }
-    public Integer getIndexSpesialis() {
-        return pref.getInt("spindex", '0');
-    }
-
-
-    public void setNama(String nama, int index){
-        editor.putString("nama"+index,nama);
-
-        editor.commit();
-    }
-    public String getNama(int index) {
-        return pref.getString("nama"+index, "");
-    }
-
-
-
-    public void setIndexNama(int index){
-        editor.putInt("namaindex",index);
-
-        editor.commit();
-    }
-    public Integer getIndexNama() {
-        return pref.getInt("namaindex", '0');
-    }*/
 
 
     public void clear() {
