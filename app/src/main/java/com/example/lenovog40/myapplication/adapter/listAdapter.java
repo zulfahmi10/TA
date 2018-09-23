@@ -76,7 +76,7 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
                         mBuilder.hide();
                         Toast.makeText(view.getContext(),"Anda Telah Mengikuti Event "+ judul.getText().toString(), Toast.LENGTH_LONG);
 
-                    }
+                        }
                 });
 
                 mBuilder.show();
@@ -87,12 +87,13 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.MyViewHolder> 
 
     private void registerEvent(Context context, String idEvent) {
         baseApiService = UtilsApi.getApiService();
-        PrefManager prefManager =new PrefManager(context);
+        final PrefManager prefManager =new PrefManager(context);
         baseApiService.ikutevent(prefManager.getId(),idEvent,  prefManager.getNamaUser(),prefManager.getAlamat(),prefManager.getTelpon(),prefManager.getEmail()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
             }
+
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
